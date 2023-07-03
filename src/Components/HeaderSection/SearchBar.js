@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Input} from "@chakra-ui/react";
 
 function SearchBar() {
@@ -11,7 +11,7 @@ function SearchBar() {
 
     return (
         <>
-        <Input placeholder={"Urun Ara"} htmlSize={100} width={"auto"} onSubmit={handleSearchData} />
+        <Input placeholder={"Urun Ara"} htmlSize={100} width={"auto"} onSubmit={handleSearchData}  />
 
         </>
     )

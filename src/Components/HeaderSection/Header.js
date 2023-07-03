@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "../../App.css";
 import "../../index.css";
 import SearchBar from "./SearchBar";
@@ -7,23 +7,63 @@ import Cart from "./Cart";
 import {NavLink} from "react-router-dom";
 
 function Header() {
+
+    const [width, setWidth] = useState(window.innerWidth);
+
+    function handleWindowSizeChange() {
+        setWidth(window.innerWidth);
+    }
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, []);
+
+    const isMobile = width <= 768;
+
     return (
         <>
-         <div className='h-15 border-site md:pl-20 w-full flex p-5 flex-auto items-center text-white dark:text-black container mx-auto'>
+            {(isMobile && (
+                <div className='h-15 border-site md:pl-20 w-full flex-col p-5 flex-auto items-center text-white dark:text-black container mx-auto'>
+                    <NavLink to={'/'}><h1 className="text-orange-600 font-sans text-2xl ml-20 text-3xl" >Dukkan</h1></NavLink>
+                    {/*Search bar*/}
+                    <div className='flex justify-center w-full items-center ml-20'>
+                        <SearchBar/>
+                    </div>
+                    <div className='w-full  flex justify-end items-center mx-auto'>
+                        {/*Account Tab*/}
+                        <AccountTab/>
+                        {/*Cart*/}
+                        <Cart/>
+                    </div>
+                </div>
+            ) || <div className='h-15 border-site md:pl-20 w-full flex p-5 flex-auto items-center text-white dark:text-black container mx-auto'>
+                <NavLink to={'/'}><h1 className="text-orange-600 font-sans text-2xl ml-20 text-3xl" >Dukkan</h1></NavLink>
+                {/*Search bar*/}
+                <div className='flex justify-center w-full items-center ml-20'>
+                    <SearchBar/>
+                </div>
+                <div className='w-full  flex justify-end items-center mx-auto'>
+                    {/*Account Tab*/}
+                    <AccountTab/>
+                    {/*Cart*/}
+                    <Cart/>
+                </div>
+            </div> )}
         {/*<div className=" container flex flex-auto  pt-10 ml-10 gap-72 pb-3 justify-between">*/}
             {/*Logo*/}
-             <NavLink to={'/'}><h1 className="text-orange-600 font-sans text-2xl ml-20 text-3xl" >Dukkan</h1></NavLink>
-            {/*Search bar*/}
-             <div className='flex justify-center w-full items-center ml-20'>
-            <SearchBar/>
-             </div>
-             <div className='w-full  flex justify-end items-center mx-auto'>
-             {/*Account Tab*/}
-               <AccountTab/>
-            {/*Cart*/}
-              <Cart/>
-             </div>
-        </div>
+            {/* <NavLink to={'/'}><h1 className="text-orange-600 font-sans text-2xl ml-20 text-3xl" >Dukkan</h1></NavLink>*/}
+            {/*/!*Search bar*!/*/}
+            {/* <div className='flex justify-center w-full items-center ml-20'>*/}
+            {/*<SearchBar/>*/}
+            {/* </div>*/}
+            {/* <div className='w-full  flex justify-end items-center mx-auto'>*/}
+            {/* /!*Account Tab*!/*/}
+            {/*   <AccountTab/>*/}
+            {/*/!*Cart*!/*/}
+            {/*  <Cart/>*/}
+            {/* </div>*/}
         <div className={" grid grid-cols-4 w-full"}>
             <div className={"bg-orange-700 h-1"}></div>
             <div className={"bg-blue-700 h-1"}></div>
