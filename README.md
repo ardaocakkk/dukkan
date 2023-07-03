@@ -18,6 +18,15 @@ You may also see any lint errors in the console.
 ### `Routes`
 
 In the Routes folder, you can see and check out every rout
+| Route Name  | Route Description |
+| ------------- | ------------- |
+| `/category`     | All categories in the dukkan |
+| `/Detail`       | Product detail |
+| `/forgotpassword` | Reset passsword |
+| `/Home`         | Home Page |
+| `/Login`        | Login Page |
+| `/register`     | Register Page |
+| `/stores`       | All stores in dukkan |
 
 ### `npm test`
 
