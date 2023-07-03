@@ -2,6 +2,11 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+## Available Paths
+
+In the routes folder, you can see every path
+
 ## Available Scripts
 
 In the project directory, you can run:
