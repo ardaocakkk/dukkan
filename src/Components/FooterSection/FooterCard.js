@@ -1,4 +1,4 @@
-import {Card, CardHeader, CardBody, CardFooter, Heading, Text, SimpleGrid, Button, Image} from '@chakra-ui/react'
+import {Card, CardHeader, CardBody, CardFooter, Heading, Text, SimpleGrid,Image} from '@chakra-ui/react'
 
 function FooterCard() {
     return (

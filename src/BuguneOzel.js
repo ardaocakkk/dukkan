@@ -1,4 +1,4 @@
-var carouselItems = [
+var buguneOzel = [
     {
         id: "1",
         title: "Vestfrost beyaz esyalarda",
@@ -37,4 +37,4 @@ var carouselItems = [
     }
 
 ]
-export default carouselItems;
+export default buguneOzel;

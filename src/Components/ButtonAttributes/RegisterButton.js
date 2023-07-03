@@ -9,17 +9,16 @@ import {
     AlertDialogCloseButton, useDisclosure, Button, Link,Text
 } from '@chakra-ui/react'
 import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
-import KayitOlButton from "./KayitOlButton";
-import KayitOlButtonOffVisible from "./KayitOlButtonOffVisible";
+import KayitOlButton from "./RegisterButtonVisible";
+import RegisterButtonOffVisible from "./RegisterButtonOffVisible";
 
-export default function KVKKButton() {
+export default function RegisterButton() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef()
 
     const [showChecked, setChecked] = useState(false)
     const handleShowChecked = () => {
         setChecked(!showChecked)
-        console.log(showChecked)
     }
 
     const [disabled, setDisabled] = useState(true);
@@ -28,12 +27,11 @@ export default function KVKKButton() {
         if(disabled) {
             setDisabled(!disabled)
         }
-        console.log(disabled)
     }
 
     return (
         <>
-        <Link onClick={onOpen} style={{textDecoration: "none"}}><Text className={'text-orange-600'}>KVKK Sozlesmesini okumak icin buna basiniz.</Text></Link>
+        <Link onClick={onOpen} style={{textDecoration: "none"}}><Text className={'text-orange-600'}>KVKK Sozlesmesini okumak icin buraya tiklayiniz.</Text></Link>
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
@@ -48,7 +46,6 @@ export default function KVKKButton() {
                         <AlertDialogBody>
                             KVKK ile ilgili havali sozlesme.
                         </AlertDialogBody>
-
                         <AlertDialogFooter>
                             <Button ref={cancelRef} onClick={onClose}>
                                 Iptal
@@ -66,7 +63,7 @@ export default function KVKKButton() {
 
                 </Checkbox>
             </CheckboxGroup>
-            {showChecked ? <KayitOlButton/> : <KayitOlButtonOffVisible/>}
+            {showChecked ? <KayitOlButton/> : <RegisterButtonOffVisible/>}
         </>
     )
 }

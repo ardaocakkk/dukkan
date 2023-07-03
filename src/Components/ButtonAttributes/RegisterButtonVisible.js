@@ -4,7 +4,7 @@ import DoneIcon from "@mui/icons-material/Done";
 
 function KayitOlButtonVisible() {
     return (
-            <Button className={'w-full'} colorScheme={'orange'} variant={'outline'}>Kayit Ol <DoneIcon className={'ml-2'} /> </Button>
+            <Button className={'w-full'} colorScheme={'orange'} variant={'outline'} type='submit' >Kayit Ol <DoneIcon className={'ml-2'} /> </Button>
     )
 }
 
