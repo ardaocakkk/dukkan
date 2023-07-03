@@ -25,9 +25,10 @@ function ProductByCategory() {
          fetchProductData()
     }, [])
     return(
-        <div className='m-auto flex container mt-10 ml-[120px] mr-auto w-auto h-auto'>
-            <h1 className={'font-sans text-2xl font-bold'}>Size {} Kategorisinde Onerilen Urunler</h1>
-            <div className="grid mt-10 ml-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 mx-auto ">
+        <>
+        <h1 className={'font-sans text-2xl font-bold'}>Size Kategorisinde Onerilen Urunler</h1>
+            <div className='flex container mt-10 mx-auto w-auto h-auto items-center justify-center'>
+            <div className="grid mt-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 ml-24  ">
                 {/* Return elements from data*/}
                 {products.map(product => {
                     return(
@@ -46,6 +47,7 @@ function ProductByCategory() {
             </div>
 
         </div>
+        </>
     )
 }
 

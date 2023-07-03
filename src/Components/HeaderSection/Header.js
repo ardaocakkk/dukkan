@@ -24,14 +24,15 @@ function Header() {
 
     return (
         <>
+
             {(isMobile && (
-                <div className='h-15 border-site md:pl-20 w-full flex-col p-5 flex-auto items-center text-white dark:text-black container mx-auto'>
-                    <NavLink to={'/'}><h1 className="text-orange-600 font-sans text-2xl ml-20 text-3xl" >Dukkan</h1></NavLink>
+                <div className='border-site w-full flex-col  flex-auto'>
+                    <NavLink to={'/'}><h1 className="text-orange-600 font-sans text-2xl  text-3xl" >Dukkan</h1></NavLink>
                     {/*Search bar*/}
-                    <div className='flex justify-center w-full items-center ml-20'>
+                    <div className='flex  w-full items-center'>
                         <SearchBar/>
                     </div>
-                    <div className='w-full  flex justify-end items-center mx-auto'>
+                    <div className='w-full  flex items-center mx-auto'>
                         {/*Account Tab*/}
                         <AccountTab/>
                         {/*Cart*/}
@@ -51,26 +52,13 @@ function Header() {
                     <Cart/>
                 </div>
             </div> )}
-        {/*<div className=" container flex flex-auto  pt-10 ml-10 gap-72 pb-3 justify-between">*/}
-            {/*Logo*/}
-            {/* <NavLink to={'/'}><h1 className="text-orange-600 font-sans text-2xl ml-20 text-3xl" >Dukkan</h1></NavLink>*/}
-            {/*/!*Search bar*!/*/}
-            {/* <div className='flex justify-center w-full items-center ml-20'>*/}
-            {/*<SearchBar/>*/}
-            {/* </div>*/}
-            {/* <div className='w-full  flex justify-end items-center mx-auto'>*/}
-            {/* /!*Account Tab*!/*/}
-            {/*   <AccountTab/>*/}
-            {/*/!*Cart*!/*/}
-            {/*  <Cart/>*/}
-            {/* </div>*/}
         <div className={" grid grid-cols-4 w-full"}>
             <div className={"bg-orange-700 h-1"}></div>
             <div className={"bg-blue-700 h-1"}></div>
             <div className={"bg-purple-700 h-1"}></div>
             <div className={"bg-green-700 h-1"}></div>
         </div>
-        <div className={"w-full bg-cool_gray pl-20 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 font-sans place-content-center pt-3 pb-3"}>
+        <div className={"w-full bg-cool_gray grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 font-sans place-content-center pt-3 pb-3"}>
           <NavLink to={'/category/electronics'}> <div>Elektronik</div> </NavLink>
           <NavLink to={'/category/jewelery'}> <div>Takı, Mücevher</div> </NavLink>
           <NavLink to={'/category/men\'s%20clothing'}> <div>Erkek Giyim</div> </NavLink>
