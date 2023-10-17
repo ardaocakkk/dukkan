@@ -19,6 +19,7 @@ public class EcommerceApplication {
         SpringApplication.run(EcommerceApplication.class, args);
     }
 
+    /*
     @Bean
     CommandLineRunner commandLineRunner(UserService userService) {
         return args -> {
@@ -29,4 +30,6 @@ public class EcommerceApplication {
 
         };
     }
+
+     */
 }

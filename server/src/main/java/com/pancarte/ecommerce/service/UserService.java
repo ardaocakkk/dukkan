@@ -6,30 +6,38 @@ import com.pancarte.ecommerce.model.User;
 import com.pancarte.ecommerce.repository.RoleRepository;
 import com.pancarte.ecommerce.repository.UserRepository;
 
+import com.pancarte.ecommerce.security.SecurityConfig;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
  import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserService {
-    @Autowired
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-
-    @Autowired
     private final ProductService productService;
+    private final StoreService storeService;
+    private final RoleRepository roleRepository;
+
 
     @Autowired
-    private final StoreService storeService;
-    @Autowired
-    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
 
 
     public List<User> getUsers(){
@@ -44,7 +52,8 @@ public class UserService {
         var existingUser = userRepository.findByEmail(theUser.getEmail());
         if(existingUser != null){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "User already exists");
-        }        
+        }
+        theUser.setPassword(bCryptPasswordEncoder.encode(theUser.getPassword()));
         return userRepository.save(theUser);
     }
 
@@ -87,5 +96,15 @@ public class UserService {
         Role theRole = roleRepository.findByName(role);
         user.getRoles().add(theRole);
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if(user == null){
+            throw new UsernameNotFoundException("User not found");
+        }
+        List<SimpleGrantedAuthority> authorities =  user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return org.springframework.security.core.userdetails.User.builder().username(user.getEmail()).password(user.getPassword()).authorities(authorities).build();
     }
 }
