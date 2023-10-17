@@ -35,6 +35,7 @@ public class Product {
 
 
     @ManyToMany(mappedBy = "likedProducts")
+    @JsonManagedReference
     @JsonIgnore
     private List<User> likedUsers;
 

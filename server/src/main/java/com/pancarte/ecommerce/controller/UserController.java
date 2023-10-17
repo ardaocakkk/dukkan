@@ -4,6 +4,10 @@ import com.pancarte.ecommerce.model.Address;
 import com.pancarte.ecommerce.model.Product;
 import com.pancarte.ecommerce.model.User;
 import com.pancarte.ecommerce.service.UserService;
+
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +16,11 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping(value = "/api/users")
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
 
     @GetMapping
@@ -36,6 +41,17 @@ public class UserController {
     @PutMapping
     public User updateUser(@RequestBody User theUser) {
         return userService.updateUser(theUser);
+    }
+
+    @PatchMapping
+    public void addRoles(@RequestBody AddRoleRequest request) {
+        userService.addRoleTo(request.getEmail(), request.getRole());
+    }
+
+    @Data
+    class AddRoleRequest {
+        private String email;
+        private String role;
     }
 
     @DeleteMapping("/{id}")
