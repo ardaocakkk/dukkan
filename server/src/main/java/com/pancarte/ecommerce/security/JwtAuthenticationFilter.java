@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,11 +33,10 @@ import java.util.HashMap;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,

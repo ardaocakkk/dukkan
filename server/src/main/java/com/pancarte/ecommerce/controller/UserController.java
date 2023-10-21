@@ -1,6 +1,5 @@
 package com.pancarte.ecommerce.controller;
 
-import com.pancarte.ecommerce.model.Address;
 import com.pancarte.ecommerce.model.Product;
 import com.pancarte.ecommerce.model.User;
 import com.pancarte.ecommerce.service.UserService;
@@ -8,11 +7,12 @@ import com.pancarte.ecommerce.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RequestMapping(value = "/api/users")
@@ -20,25 +20,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
     private final UserService userService;
 
 
+
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public List<User> getAllUsers(){
         return userService.getUsers();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     public User getUserById(@PathVariable int id) {
         return userService.getUserById(id);
     }
 
+
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    @PreAuthorize("permitAll()")
+    public User save(@RequestBody User theUser) throws Exception{
+        return userService.save(theUser);
     }
+
+
 
     @PutMapping
     public User updateUser(@RequestBody User theUser) {
@@ -71,8 +76,10 @@ public class UserController {
         return userService.getUserWishlist(id);
     }
 
-
-
+    @RequestMapping("/me")
+    public String getAuthenticatedUser(@AuthenticationPrincipal User user) {
+        return user.getEmail();
+    }
 
 
 }

@@ -4,7 +4,6 @@ import com.pancarte.ecommerce.model.Address;
 import com.pancarte.ecommerce.model.User;
 import com.pancarte.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -25,7 +24,7 @@ public class AddressController {
         User user = userService.getUserById(id);
         user.setAddress(address);
         address.setUser(user);
-        return userService.addUser(user).getAddress();
+        return userService.save(user).getAddress();
     }
 
     @PutMapping("/{id}")
@@ -33,14 +32,14 @@ public class AddressController {
         User user = userService.getUserById(id);
         user.setAddress(address);
         address.setUser(user);
-        return userService.addUser(user).getAddress();
+        return userService.save(user).getAddress();
     }
 
     @DeleteMapping("/{id}")
     public String deleteUserDetails(@PathVariable int id) {
         User user = userService.getUserById(id);
         user.setAddress(null);
-        userService.addUser(user);
+        userService.save(user);
         return "Address Removed";
     }
 

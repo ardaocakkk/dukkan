@@ -6,22 +6,26 @@ import com.pancarte.ecommerce.model.User;
 import com.pancarte.ecommerce.repository.RoleRepository;
 import com.pancarte.ecommerce.repository.UserRepository;
 
-import com.pancarte.ecommerce.security.SecurityConfig;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
  import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,17 +49,31 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserById(int id) {
-        return userRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
+        System.out.println(user.getRoles());
+        return user;
     }
 
-    public User addUser(User theUser){
-        var existingUser = userRepository.findByEmail(theUser.getEmail());
-        if(existingUser != null){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "User already exists");
+    @Transactional
+    public User save(User theUser){
+        try {
+            Objects.requireNonNull(theUser.getEmail());
+            Objects.requireNonNull(theUser.getPassword());
+        } catch (NullPointerException e) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Email and password are required");
         }
         theUser.setPassword(bCryptPasswordEncoder.encode(theUser.getPassword()));
+        Set<Role> newRole = (Set<Role>) roleRepository.findByName("ROLE_USER");
+        theUser.setRoles(newRole);
+
         return userRepository.save(theUser);
     }
+
+
+    public Map<String, Object> getAuthenticatedUser(@AuthenticationPrincipal User user) {
+        return Map.of("email", user.getEmail(), "roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
+    }
+
 
     public String deleteUserById(int id) {
         userRepository.deleteById(id);
@@ -91,6 +109,7 @@ public class UserService implements UserDetailsService {
         return wishList;
     }
 
+    @Transactional
     public void addRoleTo(String email, String role) {
         User user = userRepository.findByEmail(email);
         Role theRole = roleRepository.findByName(role);
