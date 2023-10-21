@@ -54,6 +54,9 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
     @Transactional
     public User save(User theUser){
         try {
