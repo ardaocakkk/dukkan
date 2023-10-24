@@ -8,6 +8,9 @@ import com.pancarte.ecommerce.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.After;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +25,8 @@ import org.springframework.web.client.HttpClientErrorException;
  import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.security.Principal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,8 +67,8 @@ public class UserService implements UserDetailsService {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Email and password are required");
         }
         theUser.setPassword(bCryptPasswordEncoder.encode(theUser.getPassword()));
-        Set<Role> newRole = (Set<Role>) roleRepository.findByName("ROLE_USER");
-        theUser.setRoles(newRole);
+        theUser.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByName("ROLE_USER"))));
+
 
         return userRepository.save(theUser);
     }
@@ -115,9 +116,14 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void addRoleTo(String email, String role) {
         User user = userRepository.findByEmail(email);
+        System.out.println(user);
         Role theRole = roleRepository.findByName(role);
         user.getRoles().add(theRole);
         userRepository.save(user);
+    }
+
+    public User getAuthenticatedUser(Authentication authentication, Principal principal) {
+        return findUserByEmail(authentication.getName());
     }
 
     @Override
@@ -129,4 +135,8 @@ public class UserService implements UserDetailsService {
         List<SimpleGrantedAuthority> authorities =  user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
         return org.springframework.security.core.userdetails.User.builder().username(user.getEmail()).password(user.getPassword()).authorities(authorities).build();
     }
+
+
+
+
 }

@@ -26,7 +26,7 @@ public class UserController {
 
 
 
-    @GetMapping
+    @RequestMapping(method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public List<User> getAllUsers(){
         return userService.getUsers();
@@ -39,7 +39,7 @@ public class UserController {
     }
 
 
-    @PostMapping
+    @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("permitAll()")
     public User save(@RequestBody User theUser) throws Exception{
         return userService.save(theUser);
@@ -52,18 +52,22 @@ public class UserController {
         return userService.updateUser(theUser);
     }
 
-    @PatchMapping
-    public void addRoles(@RequestBody AddRoleRequest request) {
-        userService.addRoleTo(request.getEmail(), request.getRole());
-    }
 
     @Data
-    class AddRoleRequest {
+    static class AddRoleRequest {
         private String email;
         private String role;
     }
 
-    @DeleteMapping("/{id}")
+    @RequestMapping(method = RequestMethod.PATCH)
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public void addRoles(@RequestBody AddRoleRequest request) {
+        userService.addRoleTo(request.getEmail(), request.getRole());
+    }
+
+
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     public String deleteUser(@PathVariable int id) {
         return userService.deleteUserById(id);
     }
@@ -80,7 +84,7 @@ public class UserController {
 
     @RequestMapping("/me")
     public User getAuthenticatedUser(Authentication authentication, Principal principal) {
-        return userService.findUserByEmail(authentication.getName());
+        return userService.getAuthenticatedUser(authentication, principal);
     }
 
 

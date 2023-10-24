@@ -4,10 +4,11 @@ import com.pancarte.ecommerce.model.Address;
 import com.pancarte.ecommerce.model.User;
 import com.pancarte.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
-@RequestMapping(value = "/api/adresses")
+@RequestMapping(value = "/api/address")
 @RestController
 public class AddressController {
 
@@ -19,9 +20,9 @@ public class AddressController {
         return userService.getUserById(id).getAddress();
     }
 
-    @PostMapping("/{id}")
-    public Address addUserDetails(@PathVariable int id, @RequestBody Address address) {
-        User user = userService.getUserById(id);
+    @PostMapping
+    public Address addUserDetails(Authentication authentication, @RequestBody Address address) {
+        User user = userService.findUserByEmail(authentication.getName());
         user.setAddress(address);
         address.setUser(user);
         return userService.save(user).getAddress();

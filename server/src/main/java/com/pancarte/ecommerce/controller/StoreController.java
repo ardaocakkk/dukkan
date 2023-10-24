@@ -5,6 +5,7 @@ import com.pancarte.ecommerce.model.Store;
 import com.pancarte.ecommerce.model.StoreDetails;
 import com.pancarte.ecommerce.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +13,13 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 @RequestMapping(value = "/api/store")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_STORE')")
 public class StoreController {
     @Autowired
     private StoreService storeService;
 
-    @GetMapping(value = "")
+    @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public List<Store> getAllStores() {
         return storeService.getAllStores();
     }
@@ -27,8 +30,8 @@ public class StoreController {
         return storeService.getStoreByID(id);
     }
 
-    @PostMapping(value = "/add")
-    public Store addStoreToDB(@RequestBody Store theStore) {
+    @PostMapping
+    public Store save(@RequestBody Store theStore) {
         return storeService.addStoreToDB(theStore);
     }
 

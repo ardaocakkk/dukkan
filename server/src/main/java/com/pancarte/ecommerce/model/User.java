@@ -55,7 +55,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> likedProducts;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
 
